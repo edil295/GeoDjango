@@ -4,6 +4,7 @@
 
 ```bash
 docker-compose up -d --build
+```
 
 ## Доступ к Админ-Панели
 
