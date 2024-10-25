@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+echo "Ожидание подключения к базе данных..."
+sleep 5
+
+python manage.py migrate
+
+if python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(is_superuser=True).exists())" | grep -q "False"; then
+    echo "Создание суперпользователя..."
+
+    python manage.py createsuperuser --noinput --username admin --email admin@example.com
+
+    python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); user = User.objects.get(username='admin'); user.set_password('admin'); user.save()"
+
+    echo "Суперпользователь создан."
+else
+    echo "Суперпользователь уже существует."
+fi
+
+python manage.py runserver 0.0.0.0:8000
