@@ -4,3 +4,8 @@
 
 ```bash
 docker-compose up -d --build
+
+## Доступ к Админ-Панели
+
+- **Логин:** `admin`
+- **Пароль:** `admin`
